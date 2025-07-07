@@ -1,5 +1,20 @@
+<script setup lang="ts">
+import { useQuizStore } from '../stores/quiz.ts'
+import { useRouter } from 'vue-router'
+
+const quizStore = useQuizStore()
+const router = useRouter()
+
+const totalQuestions: number = quizStore.totalQuestions
+
+const startQuiz = (): void => {
+  quizStore.startQuiz()
+  router.push('/question/1')
+}
+</script>
+
 <template>
-  <div class="text-center">
+  <div class="flex justify-center text-center">
     <div class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
       <h1 class="text-4xl font-bold text-gray-800 mb-6">Welcome to Quiz Master</h1>
       <p class="text-lg text-gray-600 mb-8">
@@ -31,18 +46,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useQuizStore } from '../stores/quiz.ts'
-import { useRouter } from 'vue-router'
-
-const quizStore = useQuizStore()
-const router = useRouter()
-
-const totalQuestions: number = quizStore.totalQuestions
-
-const startQuiz = (): void => {
-  quizStore.startQuiz()
-  router.push('/question/1')
-}
-</script>

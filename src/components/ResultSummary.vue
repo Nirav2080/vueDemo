@@ -1,3 +1,36 @@
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useQuizStore } from '../stores/quiz'
+import type { Question } from '../types'
+
+const quizStore = useQuizStore()
+
+const score = computed((): number => quizStore.score)
+const percentage = computed((): number => quizStore.percentage)
+const timeSpent = computed((): number => quizStore.timeSpent)
+const questions = computed((): Question[] => quizStore.questions)
+const answers = computed((): (number | boolean)[] => quizStore.answers)
+
+const formatTime = (seconds: number): string => {
+  const mins = Math.floor(seconds / 60)
+  const secs = seconds % 60
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+}
+
+const isCorrect = (index: number): boolean => {
+  const question = questions.value[index]
+  const answer = answers.value[index]
+
+  if (question.type === 'multiple-choice') {
+    return answer === question.correct
+  } else if (question.type === 'true-false') {
+    return answer === question.correct
+  }
+  return false
+}
+</script>
+
 <template>
   <div class="bg-gray-50 rounded-lg p-6">
     <div class="grid md:grid-cols-3 gap-6 mb-6">
@@ -41,35 +74,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { useQuizStore } from '../stores/quiz'
-import type { Question } from '../types'
-
-const quizStore = useQuizStore()
-
-const score = computed((): number => quizStore.score)
-const percentage = computed((): number => quizStore.percentage)
-const timeSpent = computed((): number => quizStore.timeSpent)
-const questions = computed((): Question[] => quizStore.questions)
-const answers = computed((): (number | boolean)[] => quizStore.answers)
-
-const formatTime = (seconds: number): string => {
-  const mins = Math.floor(seconds / 60)
-  const secs = seconds % 60
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-}
-
-const isCorrect = (index: number): boolean => {
-  const question = questions.value[index]
-  const answer = answers.value[index]
-
-  if (question.type === 'multiple-choice') {
-    return answer === question.correct
-  } else if (question.type === 'true-false') {
-    return answer === question.correct
-  }
-  return false
-}
-</script>
